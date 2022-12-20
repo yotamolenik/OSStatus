@@ -1,18 +1,12 @@
+import click
 import requests
 from bs4 import BeautifulSoup
-import click
-
-
-
-def cli(ctx, directory):
-    """ Parse .mobileconfig files in a given directory """
-    ctx.ensure_object(dict)
-    ctx.obj['directory'] = directory
 
 
 @click.group()
 @click.pass_context
 def cli(ctx):
+    """ get error code information from the OSStatus website """
     ctx.ensure_object(dict)
     response = requests.get("https://www.osstatus.com/search/results?platform=all&framework=all&search=")
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -21,16 +15,18 @@ def cli(ctx):
     ctx.obj['table_rows'] = trs
 
 
-@click.command()
+@cli.command()
 @click.pass_context
 def print_all(ctx):
+    """ print all errors to stdout """
     for tr in ctx.obj['table_rows']:
         print(tr)
 
 
-@click.command()
+@cli.command()
 @click.pass_context
 def get_all(ctx):
+    """ return all errors """
     return ctx.obj['table_rows']
 
 
