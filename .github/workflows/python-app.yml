@@ -35,4 +35,4 @@ jobs:
           python -m pip install -U .
       - name: Test show usage
         run: |
-          python -m mobileconfig
+          python -m osstatus
