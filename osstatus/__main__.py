@@ -3,6 +3,9 @@ import requests
 from bs4 import BeautifulSoup
 
 
+def tat_smaller(tag1, tag2):
+    pass
+
 @click.group()
 @click.pass_context
 def cli(ctx):
@@ -12,6 +15,7 @@ def cli(ctx):
     soup = BeautifulSoup(response.text, 'html.parser')
     tbody = soup.find('tbody')
     trs = tbody.find_all('tr')
+    # trs.sort()
     ctx.obj['table_rows'] = trs
 
 
@@ -39,7 +43,11 @@ def get_code_info(code):
     tbody = soup.find('tbody')
     trs = tbody.find_all('tr')
     for tr in trs:
-        print(tr)
+        td_list = tr.find_all('td')
+        num_td = td_list[3]
+        num_str = num_td.get_text()
+        print(int(num_str))
+        print(type(int(num_str)))
 
 
 if __name__ == '__main__':
