@@ -4,7 +4,7 @@ import click
 import requests
 from bs4 import BeautifulSoup
 
-from osstatus.cache import Platform, ErrorCode, CACHE_FILE
+from osstatus.cache import CACHE_FILE, ErrorCode, Platform
 
 
 @click.command()
