@@ -1,45 +1,69 @@
+import json
+from dataclasses import asdict
+from enum import Enum
+
 import click
-import requests
-from bs4 import BeautifulSoup
+from pygments import highlight, formatters, lexers
+
+from osstatus import cache
+
+
+def default_json_encoder(obj):
+    if isinstance(obj, Enum):
+        return str(obj)
+    raise TypeError()
+
+
+def print_json(buf, colored=True, default=default_json_encoder):
+    formatted_json = json.dumps(buf, sort_keys=True, indent=4, default=default)
+    if colored:
+        colorful_json = highlight(formatted_json, lexers.JsonLexer(),
+                                  formatters.TerminalTrueColorFormatter(style='stata-dark'))
+        print(colorful_json)
+    else:
+        print(formatted_json)
 
 
 @click.group()
-@click.pass_context
-def cli(ctx):
-    """ get error code information from the OSStatus website """
-    ctx.ensure_object(dict)
-    response = requests.get('https://www.osstatus.com/search/results?platform=all&framework=all&search=')
-    soup = BeautifulSoup(response.text, 'html.parser')
-    tbody = soup.find('tbody')
-    trs = tbody.find_all('tr')
-    ctx.obj['table_rows'] = trs
+def cli():
+    """ query error codes """
+    pass
+
+
+@cli.command('all')
+@click.option('--color/--no-color', default=True, help='colored output')
+def all_(color: bool):
+    """ get all possible errors codes """
+    result = []
+    for options in cache.get_all_errors_codes().values():
+        for option in options:
+            result.append(asdict(option))
+    print_json(result, colored=color)
 
 
 @cli.command()
-@click.pass_context
-def print_all(ctx):
-    """ print all errors to stdout """
-    for tr in ctx.obj['table_rows']:
-        print(tr)
+@click.argument('value', type=click.INT)
+@click.option('--color/--no-color', default=True, help='colored output')
+def code(value: int, color: bool):
+    """ get all possible errors codes by error code """
+    result = []
+    for entry in cache.get_possible_error_codes(value):
+        result.append(asdict(entry))
+    print_json(result, colored=color)
 
 
 @cli.command()
-@click.pass_context
-def get_all(ctx):
-    """ return all errors """
-    return ctx.obj['table_rows']
-
-
-@cli.command()
-@click.argument('code', type=int)
-def get_code_info(code):
-    """ get information about a single error code """
-    response = requests.get(f'https://www.osstatus.com/search/results?platform=all&framework=all&search={code}')
-    soup = BeautifulSoup(response.text, 'html.parser')
-    tbody = soup.find('tbody')
-    trs = tbody.find_all('tr')
-    for tr in trs:
-        print(tr)
+@click.argument('name')
+@click.option('--color/--no-color', default=True, help='colored output')
+def symbol(name: str, color):
+    """ get all possible errors codes by symbol name """
+    result = []
+    for options in cache.get_all_errors_codes().values():
+        for option in options:
+            if option.name != name:
+                continue
+            result.append(asdict(option))
+    print_json(result, colored=color)
 
 
 if __name__ == '__main__':
