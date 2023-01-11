@@ -3,7 +3,7 @@ from dataclasses import asdict
 from enum import Enum
 
 import click
-from pygments import highlight, formatters, lexers
+from pygments import formatters, highlight, lexers
 
 from osstatus import cache
 

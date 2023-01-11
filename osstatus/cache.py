@@ -1,7 +1,7 @@
 import dataclasses
 import pickle
 from enum import Enum
-from functools import cache
+from functools import lru_cache
 from pathlib import Path
 from typing import List, Mapping, Optional
 
@@ -23,7 +23,7 @@ class ErrorCode:
     description: str
 
 
-@cache
+@lru_cache()
 def get_all_errors_codes() -> Mapping[int, List[ErrorCode]]:
     return pickle.loads(CACHE_FILE.read_bytes())
 
