@@ -29,4 +29,10 @@ def get_all_errors_codes() -> Mapping[int, List[ErrorCode]]:
 
 
 def get_possible_error_codes(value: int) -> Optional[List[ErrorCode]]:
+    str_value = str(value)
+    try:
+        if str_value[:2].lower() == "0x":
+            value =  int(str_value[2:], 16)
+    except ValueError as e:
+        raise e
     return get_all_errors_codes().get(value)
