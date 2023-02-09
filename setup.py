@@ -3,7 +3,7 @@ from pathlib import Path
 from setuptools import find_packages, setup
 
 BASE_DIR = Path(__file__).parent.resolve(strict=True)
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 PACKAGE_NAME = 'osstatus'
 DATA_FILES_EXTENSIONS = ['*.txt', '*.json', '*.js']
 PACKAGES = [p for p in find_packages() if not p.startswith('tests')]
