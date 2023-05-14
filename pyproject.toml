@@ -1,0 +1,46 @@
+[project]
+name = "osstatus"
+version = "1.0.2"
+description = "Get os status from the OSStatus website"
+readme = "README.md"
+requires-python = ">=3.7"
+license = { file = "LICENSE" }
+keywords = ["ios", "error", "parser"]
+authors = [
+    { name = "yotam", email = "yotamolenik@gmail.com" }
+]
+maintainers = [
+    { name = "yotam", email = "yotamolenik@gmail.com" }
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
+]
+dynamic = ["dependencies"]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.urls]
+"Homepage" = "https://github.com/yotamolenik/osstatus"
+"Bug Reports" = "https://github.com/yotamolenik/osstatus/issues"
+
+[project.scripts]
+rpcclient = "osstatus.__main__:cli"
+
+[tool.setuptools.packages.find]
+exclude = ["docs*", "tests*"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[build-system]
+requires = ["setuptools>=43.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
