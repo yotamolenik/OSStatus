@@ -35,6 +35,9 @@ test = ["pytest"]
 [project.scripts]
 rpcclient = "osstatus.__main__:cli"
 
+[tool.setuptools]
+package-data = { "osstatus" = ["cache.pickle"] }
+
 [tool.setuptools.packages.find]
 exclude = ["docs*", "tests*"]
 
