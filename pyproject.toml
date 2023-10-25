@@ -33,7 +33,7 @@ test = ["pytest"]
 "Bug Reports" = "https://github.com/yotamolenik/osstatus/issues"
 
 [project.scripts]
-rpcclient = "osstatus.__main__:cli"
+osstatus = "osstatus.__main__:cli"
 
 [tool.setuptools]
 package-data = { "osstatus" = ["cache.pickle"] }
